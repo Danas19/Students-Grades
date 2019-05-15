@@ -1,0 +1,52 @@
+insert into student(age, birth_date, first_name, last_name) values (17, '1987-05-09', "Juozas", "Petraitis");
+insert into student(age, birth_date, first_name, last_name) values (16, '1986-04-07', "Mantas", "Jonaitis");
+insert into student(age, birth_date, first_name, last_name) values (7, '1977-11-27', "Antanas", "Petraitis");
+insert into student(age, birth_date, first_name, last_name) values (7, '1977-08-03', "Vytautas", "Kazakevicius");
+
+insert into grade(grade, school_subject, student_id) values (7, 'MATH', 1);
+insert into grade(grade, school_subject, student_id) values (9, 'MATH', 1);
+insert into grade(grade, school_subject, student_id) values (10, 'MATH', 1);
+insert into grade(grade, school_subject, student_id) values (10, 'MATH', 1);
+insert into grade(grade, school_subject, student_id) values (9, 'MATH', 2);
+insert into student(age, birth_date, first_name, last_name) values (37, '1989-04-19', "Rokas", "Biliunas");
+insert into grade(grade, school_subject, student_id) values (10, 'ENGLISH', 3);
+insert into grade(grade, school_subject, student_id) values (10, 'MATH', 3);
+insert into grade(grade, school_subject, student_id) values (10, 'ENGLISH', 2);
+insert into grade(grade, school_subject, student_id) values (5, 'ENGLISH', 2);
+insert into grade(grade, school_subject, student_id) values (9, 'INFORMATION_TECHNOLOGY', 3);
+insert into grade(grade, school_subject, student_id) values (8, 'MATH', 3);
+insert into grade(grade, school_subject, student_id) values (7, 'INFORMATION_TECHNOLOGY', 3);
+insert into grade(grade, school_subject, student_id) values (8, 'ENGLISH', 4);
+insert into grade(grade, school_subject, student_id) values (5, 'MATH', 4);
+insert into grade(grade, school_subject, student_id) values (9, 'INFORMATION_TECHNOLOGY', 4);
+insert into grade(grade, school_subject, student_id) values (7, 'ENGLISH', 4);
+insert into grade(grade, school_subject, student_id) values (2, 'ENGLISH', 4);
+
+
+
+
+
+
+select * from student s
+left join grade g
+on s.id = g.student_id;
+
+
+select s.*, max(g.grade) from student s
+right join grade g
+on s.id = g.student_id
+where g.grade > 9
+group by s.id;
+
+select s.first_name, s.birth_date, avg(g.grade)
+from student s
+right join grade g
+on s.id = g.student_id
+where left(s.birth_date, 4) = 1977
+group by s.id;
+
+select s1.first_name, s2.first_name
+from student s1
+inner join student s2
+on s1.id > s2.id
+&& s1.age = s2.age;
