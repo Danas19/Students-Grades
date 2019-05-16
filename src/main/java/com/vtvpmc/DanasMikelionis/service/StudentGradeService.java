@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.stereotype.Service;
 
-import com.vtvpmc.DanasMikelionis.CreateGradeCommand;
-import com.vtvpmc.DanasMikelionis.CreateStudentCommand;
 import com.vtvpmc.DanasMikelionis.model.Grade;
-import com.vtvpmc.DanasMikelionis.model.SortingType;
 import com.vtvpmc.DanasMikelionis.model.Student;
-import com.vtvpmc.DanasMikelionis.model.Subject;
+import com.vtvpmc.DanasMikelionis.model.createCommands.CreateGradeCommand;
+import com.vtvpmc.DanasMikelionis.model.createCommands.CreateStudentCommand;
+import com.vtvpmc.DanasMikelionis.model.enums.SortingType;
+import com.vtvpmc.DanasMikelionis.model.enums.Subject;
 import com.vtvpmc.DanasMikelionis.repository.GradeRepository;
 import com.vtvpmc.DanasMikelionis.repository.StudentRepository;
 
@@ -30,23 +30,23 @@ public class StudentGradeService {
 		this.gradeRepository = gradeRepository;
 	}
 	
-	public ResponseEntity<Collection<Student>> getStudents(String sortingTypeString) {
+	public Collection<Student> getStudents(String sortingTypeString) {
 		if (SortingType.valueOf(sortingTypeString) == SortingType.LAST_NAME_ASC_FIRST_NAME_ASC) {
-			return ResponseEntity.ok().body(this.studentRepository.findAll(
+			return this.studentRepository.findAll(
 					Sort.by("lastName")
-					.and(Sort.by("firstName")))
+					.and(Sort.by("firstName"))
 			);
 		} else if (SortingType.valueOf(sortingTypeString) == SortingType.LAST_NAME_DESC_FIRST_NAME_DESC) {
-			return ResponseEntity.ok().body(this.studentRepository.findAll(
+			return this.studentRepository.findAll(
 					Sort.by("lastName").descending()
 					.and(Sort.by("firstName").descending())
-			));
+			);
 		}
-		return ResponseEntity.ok().body(this.studentRepository.findAll());
+		return this.studentRepository.findAll();
 	}
 	
-	public ResponseEntity<Collection<Student>> getStudentsQueryOrder(String orderBy1, String orderBy2) {
-		return ResponseEntity.ok().body(this.studentRepository.getStudentsQueryOrder(orderBy1, orderBy2));
+	public Collection<Student> getStudentsQueryOrder(String orderBy1, String orderBy2) {
+		return this.studentRepository.getStudentsQueryOrder(orderBy1, orderBy2);
 	}
 	
 	public Double getSubjectAverageGrade(Subject subject) {
@@ -66,31 +66,33 @@ public class StudentGradeService {
 		.size();
 	}
 	
-	public ResponseEntity<Collection<Grade>> getGrades() {
-		return ResponseEntity.ok().body(this.gradeRepository.findAll());
+	public Collection<Grade> getGrades() {
+		return this.gradeRepository.findAll();
 	}
 	
-	public ResponseEntity<Student> addStudent(CreateStudentCommand createStudentCommand) {
+	public Student addStudent(CreateStudentCommand createStudentCommand) {
 		Student newStudent = new Student(createStudentCommand.getFirstName(), createStudentCommand.getLastName(),
 				createStudentCommand.getBirthDate(), createStudentCommand.getAge());
 		this.studentRepository.save(newStudent);
-		return new ResponseEntity<Student>(newStudent, HttpStatus.CREATED);
+		return newStudent;
 	}
 	
-	public ResponseEntity<Grade> addGrade(Long customerId, CreateGradeCommand createGradeCommand) {
-		Student oldStudent = this.studentRepository.findById(customerId).orElse(null);
+	public Grade addGrade(Long studentId, CreateGradeCommand createGradeCommand) {
+		Student oldStudent = this.studentRepository.findById(studentId).orElse(null);
 		if (oldStudent == null) {
-			return ((BodyBuilder) ResponseEntity.notFound()).body(null);
+			return null;
 		}
 		
 		Grade newGrade = new Grade(createGradeCommand.getGrade(), createGradeCommand.getSchoolSubject());
-		newGrade.setStudent(oldStudent);
 		oldStudent.addGrade(newGrade);
+		newGrade.setStudent(oldStudent);
 		
-		return new ResponseEntity<Grade>(newGrade, HttpStatus.CREATED);
+		this.gradeRepository.save(newGrade);
+		
+		return newGrade;
 	}
 	
-	public ResponseEntity<Collection<Grade>> getStudentGrades(Long studentId) {
-		return ResponseEntity.ok().body(this.studentRepository.findById(studentId).orElse(null).getGrades());
+	public Collection<Grade> getStudentGrades(Long studentId) {
+		return this.studentRepository.findById(studentId).orElse(null).getGrades();
 	}
 }

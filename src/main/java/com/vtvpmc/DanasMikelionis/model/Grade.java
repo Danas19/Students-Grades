@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vtvpmc.DanasMikelionis.model.enums.Subject;
 
 @Entity
 public class Grade {

@@ -1,8 +1,8 @@
-package com.vtvpmc.DanasMikelionis;
+package com.vtvpmc.DanasMikelionis.model.createCommands;
 
 import javax.validation.constraints.NotNull;
 
-import com.vtvpmc.DanasMikelionis.model.Subject;
+import com.vtvpmc.DanasMikelionis.model.enums.Subject;
 
 public class CreateGradeCommand {
 	private int grade;

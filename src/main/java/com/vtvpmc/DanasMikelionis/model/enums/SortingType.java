@@ -1,4 +1,4 @@
-package com.vtvpmc.DanasMikelionis.model;
+package com.vtvpmc.DanasMikelionis.model.enums;
 
 public enum SortingType {
 	FIRST_NAME_ASC,
