@@ -19,6 +19,7 @@ import com.vtvpmc.DanasMikelionis.CreateGradeCommand;
 import com.vtvpmc.DanasMikelionis.CreateStudentCommand;
 import com.vtvpmc.DanasMikelionis.model.Grade;
 import com.vtvpmc.DanasMikelionis.model.Student;
+import com.vtvpmc.DanasMikelionis.model.Subject;
 import com.vtvpmc.DanasMikelionis.service.StudentGradeService;
 
 @Controller
@@ -56,6 +57,11 @@ public class StudentGradeController {
 	@GetMapping("/grades")
 	public ResponseEntity<Collection<Grade>> getGrades() {
 		return service.getGrades();
+	}
+	
+	@GetMapping("/grades/{subjectString}/average")
+	public ResponseEntity<Double> getSubjectAverageGrade(@PathVariable String subjectString) {
+		return ResponseEntity.ok().body(this.service.getSubjectAverageGrade(Subject.valueOf(subjectString)));
 	}
 	
 }

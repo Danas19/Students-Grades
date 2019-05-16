@@ -2,6 +2,7 @@ package com.vtvpmc.DanasMikelionis.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import com.vtvpmc.DanasMikelionis.CreateStudentCommand;
 import com.vtvpmc.DanasMikelionis.model.Grade;
 import com.vtvpmc.DanasMikelionis.model.SortingType;
 import com.vtvpmc.DanasMikelionis.model.Student;
+import com.vtvpmc.DanasMikelionis.model.Subject;
 import com.vtvpmc.DanasMikelionis.repository.GradeRepository;
 import com.vtvpmc.DanasMikelionis.repository.StudentRepository;
 
@@ -47,7 +49,18 @@ public class StudentGradeService {
 	public ResponseEntity<Collection<Student>> getStudentsQueryOrder(String orderBy1, String orderBy2) {
 		return ResponseEntity.ok().body(this.studentRepository.getStudentsQueryOrder(orderBy1, orderBy2));
 	}
-
+	
+	public Double getSubjectAverageGrade(Subject subject) {
+		return (double) this.gradeRepository.findAll().stream()
+		.filter(g -> g.getSchoolSubject() == subject)
+		.mapToInt(g -> g.getGrade())
+		.sum()
+		/
+		this.gradeRepository.findAll().stream()
+		.filter(g -> g.getSchoolSubject() == subject)
+		.collect(Collectors.toList())
+		.size();
+	}
 	
 	public ResponseEntity<Collection<Grade>> getGrades() {
 		return ResponseEntity.ok().body(this.gradeRepository.findAll());
