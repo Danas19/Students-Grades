@@ -3,7 +3,7 @@ var studentsTag = document.getElementById("students");
 var ourRequest = new XMLHttpRequest();
 
 
-ourRequest.open('GET', 'http://localhost:8080/api/students?sortingTypeString=FIRST_NAME_ASC');
+ourRequest.open('GET', 'http://localhost:8080/api/students?sortingTypeString=LAST_NAME_DESC_FIRST_NAME_DESC');
 ourRequest.onload = function () {
     var dataStudents = JSON.parse(ourRequest.responseText);
     console.log(dataStudents);

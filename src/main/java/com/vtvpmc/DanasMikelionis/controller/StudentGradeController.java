@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.vtvpmc.DanasMikelionis.CreateGradeCommand;
 import com.vtvpmc.DanasMikelionis.CreateStudentCommand;
 import com.vtvpmc.DanasMikelionis.model.Grade;
-import com.vtvpmc.DanasMikelionis.model.SortingType;
 import com.vtvpmc.DanasMikelionis.model.Student;
 import com.vtvpmc.DanasMikelionis.service.StudentGradeService;
 
@@ -32,6 +31,11 @@ public class StudentGradeController {
 	@GetMapping("/students")
 	public ResponseEntity<Collection<Student>> getStudents(@RequestParam(required = false) String sortingTypeString) {
 		return service.getStudents(sortingTypeString);
+	}
+	
+	@GetMapping("/students/order/{orderBy1}/{orderBy2}")
+	public ResponseEntity<Collection<Student>> getStudentsQueryOrdered(@PathVariable String orderBy1, @PathVariable String orderBy2) {
+		return this.service.getStudentsQueryOrder(orderBy1, orderBy2);
 	}
 	
 	@GetMapping("/students/{studentId}/grades")

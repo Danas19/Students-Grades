@@ -1,9 +1,10 @@
 package com.vtvpmc.DanasMikelionis.service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -29,15 +30,24 @@ public class StudentGradeService {
 	}
 	
 	public ResponseEntity<Collection<Student>> getStudents(String sortingTypeString) {
-		if (SortingType.valueOf(sortingTypeString) == SortingType.FIRST_NAME_ASC) {
-			return ResponseEntity.ok().body(this.studentRepository.findAll().stream()
-					.sorted((s1, s2) -> s1.getFirstName().compareTo(s2.getFirstName())).collect(Collectors.toList()));
-		} else if (SortingType.valueOf(sortingTypeString) == SortingType.FIRST_NAME_ASC) {
-			return ResponseEntity.ok().body(this.studentRepository.findAll().stream()
-					.sorted((s1, s2) -> s2.getFirstName().compareTo(s1.getFirstName())).collect(Collectors.toList()));
+		if (SortingType.valueOf(sortingTypeString) == SortingType.LAST_NAME_ASC_FIRST_NAME_ASC) {
+			return ResponseEntity.ok().body(this.studentRepository.findAll(
+					Sort.by("lastName")
+					.and(Sort.by("firstName")))
+			);
+		} else if (SortingType.valueOf(sortingTypeString) == SortingType.LAST_NAME_DESC_FIRST_NAME_DESC) {
+			return ResponseEntity.ok().body(this.studentRepository.findAll(
+					Sort.by("lastName").descending()
+					.and(Sort.by("firstName").descending())
+			));
 		}
 		return ResponseEntity.ok().body(this.studentRepository.findAll());
 	}
+	
+	public ResponseEntity<Collection<Student>> getStudentsQueryOrder(String orderBy1, String orderBy2) {
+		return ResponseEntity.ok().body(this.studentRepository.getStudentsQueryOrder(orderBy1, orderBy2));
+	}
+
 	
 	public ResponseEntity<Collection<Grade>> getGrades() {
 		return ResponseEntity.ok().body(this.gradeRepository.findAll());
