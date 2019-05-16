@@ -1,6 +1,7 @@
 package com.vtvpmc.DanasMikelionis.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -36,7 +37,7 @@ public class StudentGradeController {
 	}
 	
 	@GetMapping("/students/order/{orderBy1}/{orderBy2}")
-	public ResponseEntity<Collection<Student>> getStudentsQueryOrdered(@PathVariable String orderBy1, @PathVariable String orderBy2) {
+	public ResponseEntity<List<Student>> getStudentsQueryOrdered(@PathVariable String orderBy1, @PathVariable String orderBy2) {
 		return ResponseEntity.ok().body(this.service.getStudentsQueryOrder(orderBy1, orderBy2));
 	}
 	

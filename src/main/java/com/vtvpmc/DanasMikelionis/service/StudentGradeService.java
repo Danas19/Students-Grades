@@ -45,7 +45,7 @@ public class StudentGradeService {
 		return this.studentRepository.findAll();
 	}
 	
-	public Collection<Student> getStudentsQueryOrder(String orderBy1, String orderBy2) {
+	public List<Student> getStudentsQueryOrder(String orderBy1, String orderBy2) {
 		return this.studentRepository.getStudentsQueryOrder(orderBy1, orderBy2);
 	}
 	
