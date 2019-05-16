@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -51,14 +50,19 @@ public class StudentGradeService {
 	}
 	
 	public Double getSubjectAverageGrade(Subject subject) {
-		return (double) this.gradeRepository.findAll().stream()
-		.filter(g -> g.getSchoolSubject() == subject)
-		.mapToInt(g -> g.getGrade())
+		List<Integer> grades = this.gradeRepository.findAll().stream()
+				.filter(g -> g.getSchoolSubject() == subject)
+				.map(g -> g.getGrade())
+				.collect(Collectors.toList());
+		
+		if (grades.size() == 0) {
+			return null;
+		}
+		return (double) grades.stream()
+			.mapToInt(g -> g.intValue())
 		.sum()
 		/
-		this.gradeRepository.findAll().stream()
-		.filter(g -> g.getSchoolSubject() == subject)
-		.collect(Collectors.toList())
+		grades
 		.size();
 	}
 	
