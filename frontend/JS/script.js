@@ -16,7 +16,7 @@ function liMakerStudents(dataStudents) {
 
     for (var i = 0; i < dataStudents.length; i++) {
         var liTag = document.createElement("li");
-        liTag.innerHTML = dataStudents[i].firstName + " " + dataStudents[i].lastName + " birth date: " + dataStudents[i].birthDate + ", age: " + dataStudents[i].age + ". Grades: ";
+        liTag.innerHTML = "id: " + dataStudents[i].id + " " + dataStudents[i].firstName + " " + dataStudents[i].lastName + " birth date: " + dataStudents[i].birthDate + ", age: " + dataStudents[i].age + ". Grades: ";
         showGrades(dataStudents[i].id, liTag);
         ulTag.appendChild(liTag);
     }
